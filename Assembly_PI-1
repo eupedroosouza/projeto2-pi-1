@@ -1,30 +1,159 @@
+.data
 
-Expressao_Assembly:
-    # Negação das entradas usando usando o operador logicoXORI
-    xori $t0, $a0, 1      # $t0 = !A
-    xori $t1, $a1, 1      # $t1 = !B
-    xori $t2, $a2, 1      # $t2 = !C
+A:  .asciiz"\n digite o valor binario para entrada A:"
+B:  .asciiz"\n digite o valor binario para entrada B:"
+C:  .asciiz"\n digite o valor binario para entrada C:"
+X:  .asciiz"\n valor invalido porfavor digite valores de entradas binarios apenas!"
 
-    ##Primeira Parte: (!A*!B*!C)
-    and $t3, $t0, $t1     # !A AND !B
-    and $t3, $t3, $t2      # AND !C
+.text
 
-    ##Segunda Parte: (!A*B*!C)
-    and $t4, $t0, $a1     # !A AND B
-    and $t4, $t4, $t2      # AND !C
+#entrada a
 
-    ## Terceira Parte 3: (A*!B*!C)
-    and $t5, $a0, $t1     # A AND !B
-    and $t5, $t5, $t2      # AND !C
+entradaA:#rotulo de verificação binaria para entrada a
 
-    ## Quarta Parte: (A*!B*C)
-    and $t6, $a0, $t1     # A AND !B
-    and $t6, $t6, $a2      # AND C
+#entrada do valor para entrada a
 
-    # Saida (!A*!B*!C)+(!A*B*!C)+(A*!B*!C)+(A*!B*C)
+li $v0, 4
+la $a0, A
+syscall
 
-     or $v0, $t3, $t4      # Termo1 OR Termo2
-    or $v0, $v0, $t5       # OR Termo3
-    or $v0, $v0, $t6       # OR Termo4
+li $v0, 5
+Syscall 
 
-    jr $ra                # Retorna resultado em $v0
+move $s0,$v0
+
+#carregando os valores binarios para testes de verificções se as entradas correspondem a 0 ou 1
+
+li $t1, 0
+li $t2, 1
+
+#aplicando as condiações binarios as labels para gerar um loop de verificação casso incorreto, ou prosseguir o programa caso correto
+
+beq $s0, $t1, binarioA
+beq $s0, $t2, binarioA     
+
+
+#informa erro e faz um jump direto para o inicio de A
+erroA:
+ 
+li $v0, 4
+la $a0, X
+syscall
+
+j entradaA
+
+binarioA:#caso o resultado seja satisfatorio a proposta do programa
+
+
+#entrada b
+
+
+#repete o mesmo processo para entrada B apenas não é mais necesario armezanr valores binairos nos resgritradores t1 e t2 visto que foi feito anteriormente
+entradaB:
+
+li $v0, 4
+la $a0, B
+syscall
+
+li $v0, 5
+Syscall 
+
+move $s1,$v0
+
+beq $s1, $t1, binarioB
+beq $s1, $t2, binarioB     
+
+erroB:
+ 
+li $v0, 4
+la $a0, X
+syscall
+
+j entradaB
+
+binarioB:
+
+
+#entrada c
+
+#repte o mesmo teste de verificação usado na entrada B apenas com apenas modificações nos nomes de rotulos
+entradaC:
+
+li $v0, 4
+la $a0, C
+syscall
+
+li $v0, 5
+Syscall 
+
+move $s2,$v0
+
+beq $s2, $t1, binarioC
+beq $s2, $t2, binarioC     
+
+erroC:
+ 
+li $v0, 4
+la $a0, X
+syscall
+
+j entradaC
+
+binarioC:
+
+#mintermo 0
+
+xori $t3,$s0,0000000000000001
+
+
+
+xori $t4,$s1,0000000000000001
+
+
+and $t5,$t3,$t4
+
+
+xori $t6,$s2,0000000000000001
+
+and $s3,$t5,$t6
+
+
+
+
+
+#mintermo 2
+
+and $t5,$t3,$s1
+
+and $s4,$t5,$t6
+
+
+
+#mintermo 4
+
+and $t5,$t4,$s0
+
+and $s5,$t5,$t6
+
+
+
+#mintermo 5
+
+
+and $s6,$t5,$s2
+
+
+
+#resultado
+
+or $t1,$s3,$s4
+
+or $t2,$t1,$s5
+
+or $s7,$t2,$s6
+
+#saida
+
+li $v0, 1
+move $a0, $s7
+syscall
