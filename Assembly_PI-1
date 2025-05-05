@@ -11,7 +11,7 @@ logicAddSymbol: .asciiz " + "
 breakLineLabel: .asciiz "\n"
 
 resTitle: .asciiz "Resultado =>\n"
-expressaoLabel: .asciiz "Expressão: (!A x !B x !C) + (!A x B x !C) + (A x !B x !C) + (A x !B x C)\n"
+expressaoLabel: .asciiz "Expressao: (!A x !B x !C) + (!A x B x !C) + (A x !B x !C) + (A x !B x C)\n"
 entradasLabel: .asciiz "Entradas: "
 entradaALabel: .asciiz "A: "
 entradaBLabel: .asciiz "B: "
@@ -21,8 +21,8 @@ resMin2: .asciiz "Mintermo 2: (!A x B x !C) => "
 resMin3: .asciiz "Mintermo 4: (A x !B x !C) => "
 resMin4: .asciiz "Mintermo 5: (A x !B x C) => "
 resMin: .asciiz " = "
-expressaoFinalLabel: .asciiz "Expressão final: "
-resFinal: .asciiz "O resultado final da expressão é: "
+expressaoFinalLabel: .asciiz "Expressao final: "
+resFinal: .asciiz "O resultado final da expressao e: "
 .text
 
 #entrada a
